@@ -6,12 +6,15 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 
+import br.univates.appunivates.R;
 import br.univates.appunivates.database.DadosOpenHelper;
 import br.univates.appunivates.database.Tabelas;
 import br.univates.appunivates.model.Linguagem;
+import br.univates.appunivates.model.Nota;
 import br.univates.appunivates.tools.Globais;
 
 public class LinguagemController {
@@ -27,9 +30,9 @@ public class LinguagemController {
 
     public Linguagem buscar(int id){
         Linguagem objeto = null;
+        Nota notaObjeto = null;
 
         try{
-
             StringBuilder sql = new StringBuilder();
             sql.append("SELECT * FROM ");
             sql.append(Tabelas.TB_LINGUAGENS);
@@ -52,13 +55,13 @@ public class LinguagemController {
         }
     }
 
-    public boolean incluir(Linguagem objeto){
+    public boolean incluir(Linguagem objeto, int notas){
         try{
 
             ContentValues valores = new ContentValues();
             valores.put("nome", objeto.getNome());
             valores.put("descricao", objeto.getDescricao());
-
+            valores.put("notas", notas);
             conexao.insertOrThrow(Tabelas.TB_LINGUAGENS, null,
                     valores);
 
@@ -70,9 +73,8 @@ public class LinguagemController {
         }
     }
 
-    public boolean alterar(Linguagem objeto){
+    public boolean alterar(Linguagem objeto, int id_notas){
         try{
-
             ContentValues valores = new ContentValues();
             valores.put("nome", objeto.getNome());
             valores.put("descricao", objeto.getDescricao());

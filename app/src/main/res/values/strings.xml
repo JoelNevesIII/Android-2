@@ -2,4 +2,10 @@
     <string name="app_name">AppUnivates</string>
     <string name="title_menu_ok">Salvar</string>
     <string name="title_menu_cancel">Cancelar</string>
+
+    <array name="notas">
+        <item>Selecione ...</item>
+        <item>Nota 1</item>
+        <item>Nota 2</item>
+    </array>
 </resources>
