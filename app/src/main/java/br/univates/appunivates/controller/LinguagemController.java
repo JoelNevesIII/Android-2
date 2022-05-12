@@ -41,10 +41,11 @@ public class LinguagemController {
             Cursor resultado = conexao.rawQuery(sql.toString(), null);
             if(resultado.moveToNext()){
                 objeto = new Linguagem();
-
                 objeto.setId(resultado.getInt(resultado.getColumnIndexOrThrow("id")));
                 objeto.setNome(resultado.getString(resultado.getColumnIndexOrThrow("nome")));
                 objeto.setDescricao(resultado.getString(resultado.getColumnIndexOrThrow("descricao")));
+                objeto.setNota(resultado.getInt(resultado.getColumnIndexOrThrow("nota")));
+
             }
 
             return objeto;
@@ -55,13 +56,13 @@ public class LinguagemController {
         }
     }
 
-    public boolean incluir(Linguagem objeto, int notas){
+    public boolean incluir(Linguagem objeto){
         try{
 
             ContentValues valores = new ContentValues();
             valores.put("nome", objeto.getNome());
             valores.put("descricao", objeto.getDescricao());
-            valores.put("notas", notas);
+            valores.put("nota", objeto.getNota());
             conexao.insertOrThrow(Tabelas.TB_LINGUAGENS, null,
                     valores);
 
@@ -73,12 +74,12 @@ public class LinguagemController {
         }
     }
 
-    public boolean alterar(Linguagem objeto, int id_notas){
+    public boolean alterar(Linguagem objeto){
         try{
             ContentValues valores = new ContentValues();
             valores.put("nome", objeto.getNome());
             valores.put("descricao", objeto.getDescricao());
-
+            valores.put("nota", objeto.getNota());
             String[] parametros = new String[1];
             parametros[0] = String.valueOf(objeto.getId());
 
@@ -92,11 +93,11 @@ public class LinguagemController {
         }
     }
 
-    public boolean excluir(Linguagem objeto){
+    public boolean excluir(int id){
         try{
 
             String[] parametros = new String[1];
-            parametros[0] = String.valueOf(objeto.getId());
+            parametros[0] = String.valueOf(id);
 
             conexao.delete(Tabelas.TB_LINGUAGENS, "id = ?", parametros);
 
@@ -128,6 +129,7 @@ public class LinguagemController {
                     objeto.setId(resultado.getInt(resultado.getColumnIndexOrThrow("id")));
                     objeto.setNome(resultado.getString(resultado.getColumnIndexOrThrow("nome")));
                     objeto.setDescricao(resultado.getString(resultado.getColumnIndexOrThrow("descricao")));
+                    objeto.setNota(resultado.getInt(resultado.getColumnIndexOrThrow("nota")));
 
                     listagem.add(objeto);
 

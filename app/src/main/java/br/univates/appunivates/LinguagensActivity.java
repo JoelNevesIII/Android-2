@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -22,14 +24,14 @@ import br.univates.appunivates.tools.Globais;
 
 public class LinguagensActivity extends AppCompatActivity {
 
+    Button excluir;
     EditText txtNome;
     EditText txtDescricao;
     Linguagem objeto;
-    Nota notasObjeto;
+    Nota notaObjeto;
     LinguagemController controller;
     Context context;
     Spinner notasSpinner;
-    ArrayList<Nota> notas;
     int id_linguagem;
     int id_notas;
 
@@ -37,28 +39,13 @@ public class LinguagensActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_linguagens);
-
+        ArrayList<Nota> notas;
         txtNome = findViewById(R.id.txtNome_linguagem);
         txtDescricao = findViewById(R.id.txtDescricao_linguagem);
         context = LinguagensActivity.this;
         notasSpinner = findViewById(R.id.spiner_nota);
+        excluir = findViewById(R.id.btnExcluir);
 
-        //Verificar se veio algum EXTRA da tela anterior
-        Bundle extras = getIntent().getExtras();
-        if(extras != null){
-            id_linguagem = extras.getInt("id", 0);
-            //buscar através desta chave
-            controller = new LinguagemController(context);
-            objeto = controller.buscar(id_linguagem);
-            if(objeto != null){
-                txtNome.setText(objeto.getNome());
-                txtDescricao.setText(objeto.getDescricao());
-            }
-
-        }else{
-            id_linguagem = 0;
-        }
-        //String[] notas = getResources().getStringArray(R.array.notas);
 
         notas = new ArrayList<>();
         notas.add(new Nota(0, "Selecione..."));
@@ -69,6 +56,53 @@ public class LinguagensActivity extends AppCompatActivity {
 
         ArrayAdapter<Nota> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, notas);
         notasSpinner.setAdapter(adapter);
+
+
+        excluir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller = new LinguagemController(context);
+                controller.excluir(id_linguagem);
+                Globais.exibirMensagem(context, "Excluido");
+                finish();
+            }
+        });
+
+
+
+        //Verificar se veio algum EXTRA da tela anterior
+        Bundle extras = getIntent().getExtras();
+
+
+
+        if(extras != null){
+            id_linguagem = extras.getInt("id", 0);
+            //buscar através desta chave
+            controller = new LinguagemController(context);
+            objeto = controller.buscar(id_linguagem);
+            if(objeto != null){
+                txtNome.setText(objeto.getNome());
+                txtDescricao.setText(objeto.getDescricao());
+
+                for(int i = 0; i < notasSpinner.getAdapter().getCount(); i++){
+                    Nota nota  = (Nota) notasSpinner.getItemAtPosition(i);
+                    if(nota.getId() == objeto.getNota()){
+                        notasSpinner.setSelection(i);
+                        break;
+                    }
+                }
+            }
+
+
+
+        }else{
+            id_linguagem = 0;
+            if(id_linguagem == 0){
+                excluir.setVisibility(View.GONE);
+            }
+        }
+        //String[] notas = getResources().getStringArray(R.array.notas);
+
     }
 
 
@@ -83,6 +117,7 @@ public class LinguagensActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -109,7 +144,7 @@ public class LinguagensActivity extends AppCompatActivity {
 
             String nome = txtNome.getText().toString().trim();
             String descricao = txtDescricao.getText().toString().trim();
-            int idNota = notasSpinner.getId();
+            Nota nota = (Nota) notasSpinner.getSelectedItem();
             if(!nome.equals("") && !descricao.equals("")) {
 
                 if(nome.length() > 30){
@@ -121,16 +156,17 @@ public class LinguagensActivity extends AppCompatActivity {
                 objeto = new Linguagem();
                 objeto.setNome(nome);
                 objeto.setDescricao(descricao);
-                id_notas = notasSpinner.getSelectedItemPosition();
+                objeto.setNota(nota.getId());
+
                 controller = new LinguagemController(context);
 
                 boolean retorno = false;
                 if(id_linguagem == 0){
-                    retorno = controller.incluir(objeto, id_notas);
+                    retorno = controller.incluir(objeto);
                 }else{
                     objeto.setId(id_linguagem);
 
-                    retorno = controller.alterar(objeto, id_notas);
+                    retorno = controller.alterar(objeto);
                 }
 
                 if(retorno) {
@@ -145,4 +181,5 @@ public class LinguagensActivity extends AppCompatActivity {
             Log.e("ERRO", ex.getMessage());
         }
     }
+
 }

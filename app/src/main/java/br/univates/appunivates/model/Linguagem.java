@@ -1,10 +1,12 @@
 package br.univates.appunivates.model;
 
-public class Linguagem {
+import java.text.Normalizer;
 
+public class Linguagem {
     private int id;
     private String nome;
     private String descricao;
+    private int nota;
 
     public int getId() {
         return id;
@@ -28,6 +30,14 @@ public class Linguagem {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public int getNota() {
+        return nota;
+    }
+
+    public void setNota(int notas) {
+        this.nota = notas;
     }
 
     @Override
