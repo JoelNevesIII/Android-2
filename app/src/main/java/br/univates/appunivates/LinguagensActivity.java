@@ -28,12 +28,10 @@ public class LinguagensActivity extends AppCompatActivity {
     EditText txtNome;
     EditText txtDescricao;
     Linguagem objeto;
-    Nota notaObjeto;
     LinguagemController controller;
     Context context;
     Spinner notasSpinner;
     int id_linguagem;
-    int id_notas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
