@@ -34,6 +34,7 @@ public class TelasActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(context, PessoaActivity.class);
                 startActivity(intent);
+
             }
         });
 

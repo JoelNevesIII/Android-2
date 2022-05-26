@@ -4,34 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PessoaActivity"
     android:orientation="vertical"
+    tools:context=".PessoaActivity"
     >
 
-    <EditText
-        android:id="@+id/txtnomePessoa"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nome"
+        <EditText
+            android:id="@+id/txtnomePessoa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nome"
 
-        />
+            />
 
-    <com.santalu.maskara.widget.MaskEditText
-        android:id="@+id/txtTelefone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        app:mask="(__) _____-____"
-        app:maskCharacter="_"
-        app:maskStyle="normal" />
+        <com.santalu.maskara.widget.MaskEditText
+            android:id="@+id/txtTelefone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            app:mask="(__) _____-____"
+            app:maskCharacter="_"
+            app:maskStyle="normal"
+            android:hint="Telefone"
+            />
 
 
-    <ListView
-        android:id="@+id/ltvPessoa"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        <EditText
+            android:id="@+id/txtdtaNasc"
+            android:hint="Data de Nascimento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
 
-        />
+            />
+
+        <ListView
+            android:id="@+id/ltvPessoa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
 
 
 </LinearLayout>

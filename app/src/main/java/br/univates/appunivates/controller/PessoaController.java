@@ -54,6 +54,8 @@ public class PessoaController {
 
             ContentValues valores = new ContentValues();
             valores.put("nome", objeto.getNome());
+            valores.put("telefone", objeto.getTelefone());
+            valores.put("data", objeto.getData());
             conexao.insertOrThrow(Tabelas.TB_PESSOAS, null,
                     valores);
 
@@ -69,6 +71,9 @@ public class PessoaController {
         try{
             ContentValues valores = new ContentValues();
             valores.put("nome", objeto.getNome());
+            valores.put("telefone", objeto.getTelefone());
+            valores.put("data", objeto.getData());
+
             String[] parametros = new String[1];
             parametros[0] = String.valueOf(objeto.getId());
 
@@ -117,6 +122,8 @@ public class PessoaController {
 
                     objeto.setId(resultado.getInt(resultado.getColumnIndexOrThrow("id")));
                     objeto.setNome(resultado.getString(resultado.getColumnIndexOrThrow("nome")));
+                    objeto.setData(resultado.getString(resultado.getColumnIndexOrThrow("telefone")));
+                    objeto.setData(resultado.getString(resultado.getColumnIndexOrThrow("data")));
 
                     listagem.add(objeto);
 

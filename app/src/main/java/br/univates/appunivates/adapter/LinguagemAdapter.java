@@ -36,7 +36,7 @@ public class LinguagemAdapter extends ArrayAdapter<Linguagem> {
                     context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             //toda vez que passa por um item da lista, os elementos são associados
-            View rowView = inflater.inflate(R.layout.item_lista_linguagem, parent, false);
+            View rowView = inflater.inflate(R.layout.item_lista_pessoa, parent, false);
 
             TextView nome = rowView.findViewById(R.id.lblNome_item_linguagem);
             TextView descricao = rowView.findViewById(R.id.lblDescricao_item_linguagem);

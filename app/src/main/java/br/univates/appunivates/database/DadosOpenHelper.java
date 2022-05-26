@@ -8,7 +8,7 @@ import br.univates.appunivates.tools.Globais;
 
 public class DadosOpenHelper extends SQLiteOpenHelper {
 
-    private static final int VERSION = 3; //versão do banco de dados
+    private static final int VERSION = 6; //versão do banco de dados
     private static final String NM_BANCO = "banco";
     private Context context;
 
@@ -37,9 +37,9 @@ public class DadosOpenHelper extends SQLiteOpenHelper {
             sql.append(" ( ");
             sql.append(" id INTEGER PRIMARY KEY AUTOINCREMENT, ");
             sql.append(" nome VARCHAR(30) NOT NULL, ");
+            sql.append(" telefone VARCHAR(30), ");
             sql.append(" data DATE ");
             sql.append(" ) ");
-
             db.execSQL(sql.toString());
 
         }catch (Exception ex){
@@ -61,11 +61,20 @@ public class DadosOpenHelper extends SQLiteOpenHelper {
             db.execSQL(sql.toString());
         }
 
-        if (VERSION >= 3){
+        if (VERSION >= 6){
             StringBuilder sql = new StringBuilder();
             sql.append(" ALTER TABLE ");
             sql.append(Tabelas.TB_PESSOAS);
-            sql.append(" ADD telefone VARCHAR(15) ");
+            sql.append(" ADD COLUMN ");
+            sql.append(" telefone VARCHAR(15) ");
+            sql.append(" ) ");
+            db.execSQL(sql.toString());
+
+            sql = new StringBuilder();
+            sql.append(" ALTER TABLE ");
+            sql.append(Tabelas.TB_PESSOAS);
+            sql.append(" ADD COLUMN  ");
+            sql.append(" data DATE ");
             sql.append(" ) ");
             db.execSQL(sql.toString());
         }

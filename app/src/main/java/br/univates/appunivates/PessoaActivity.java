@@ -2,18 +2,25 @@ package br.univates.appunivates;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import com.santalu.maskara.widget.MaskEditText;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import br.univates.appunivates.adapter.LinguagemAdapter;
 import br.univates.appunivates.adapter.PessoaAdapter;
@@ -29,9 +36,10 @@ public class PessoaActivity extends AppCompatActivity {
     PessoaController controller;
     Context context;
     ArrayList<Pessoa> listagem;
-    PessoaAdapter adapter;
     ListView ltvPessoa;
-    MaskEditText telefone;
+    MaskEditText txttelefone;
+    EditText txtdata;
+    PessoaAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +47,60 @@ public class PessoaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pessoa);
         context = PessoaActivity.this;
         ltvPessoa = findViewById(R.id.ltvPessoa);
+        txttelefone = findViewById(R.id.txtTelefone);
+        txtdata = findViewById(R.id.txtdtaNasc);
+        adapter = new PessoaAdapter(context, listagem);
+
+
+        txtdata.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Calendar calendario = Calendar.getInstance();
+
+                Date data;
+
+                try{
+                    if(txtdata.getText().toString().equals("")){
+                        calendario = Calendar.getInstance();
+                    }else{
+                        String dtStart = txtdata.getText().toString();
+                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        try {
+                            data = format.parse(dtStart);
+                            calendario.setTime(data);
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            calendario = Calendar.getInstance();
+                        }
+                    }
+
+                    int ano = calendario.get(Calendar.YEAR);
+                    int mes = calendario.get(Calendar.MONTH);
+                    int dia = calendario.get(Calendar.DAY_OF_MONTH);
+
+                    new DatePickerDialog(context, android.R.style.Widget_DatePicker, mDateSetListener, ano, mes, dia).show();
+
+                }catch (Exception ex){
+                    calendario = Calendar.getInstance();
+                }
+
+
+            }
+        });
+
 
     }
+
+    private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            String data =(String.format("%02d", dayOfMonth)) + "/"+ (String.format("%02d", monthOfYear + 1)) + "/" + (String.format("%02d", year));
+
+            txtdata.setText(data);
+        }
+    };
 
 
     @Override
@@ -74,9 +134,12 @@ public class PessoaActivity extends AppCompatActivity {
 
     private void salvar(){
         EditText txtNome = findViewById(R.id.txtnomePessoa);
-        telefone  = findViewById(R.id.txtTelefone);
+        txttelefone  = findViewById(R.id.txtTelefone);
         Context context = this;
         Pessoa objeto;
+        String data = txtdata.getText().toString();
+
+        String data_formatada = Globais.converterData(data, "dd/MM/yyyy", "yyyy-MM-dd");
 
         try{
 
@@ -85,14 +148,14 @@ public class PessoaActivity extends AppCompatActivity {
             if(!nome.equals("")) {
                 if(nome.length() > 30){
                     Globais.exibirMensagem(context,
-                            "O nome é muito grande, credo.");
+                            "Seu nome é muito grande!");
                     return;
                 }
 
                 objeto = new Pessoa();
                 objeto.setNome(nome);
-                objeto.setTelefone(telefone.getMasked());
-
+                objeto.setTelefone(txttelefone.getMasked());
+                objeto.setData(data_formatada);
                 PessoaController controller = new PessoaController(context);
                 controller.incluir(objeto);
 
