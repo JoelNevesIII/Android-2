@@ -39,6 +39,7 @@ public class PessoaController {
                 objeto = new Pessoa();
                 objeto.setId(resultado.getInt(resultado.getColumnIndexOrThrow("id")));
                 objeto.setNome(resultado.getString(resultado.getColumnIndexOrThrow("nome")));
+                objeto.setTelefone(resultado.getString(resultado.getColumnIndexOrThrow("telefone")));
             }
 
             return objeto;
@@ -56,6 +57,7 @@ public class PessoaController {
             valores.put("nome", objeto.getNome());
             valores.put("telefone", objeto.getTelefone());
             valores.put("data", objeto.getData());
+            valores.put("cpf", objeto.getCpf());
             conexao.insertOrThrow(Tabelas.TB_PESSOAS, null,
                     valores);
 
@@ -122,8 +124,7 @@ public class PessoaController {
 
                     objeto.setId(resultado.getInt(resultado.getColumnIndexOrThrow("id")));
                     objeto.setNome(resultado.getString(resultado.getColumnIndexOrThrow("nome")));
-                    objeto.setData(resultado.getString(resultado.getColumnIndexOrThrow("telefone")));
-                    objeto.setData(resultado.getString(resultado.getColumnIndexOrThrow("data")));
+                    objeto.setTelefone(resultado.getString(resultado.getColumnIndexOrThrow("telefone")));
 
                     listagem.add(objeto);
 

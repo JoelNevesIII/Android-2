@@ -5,6 +5,15 @@ public class Pessoa {
     private String nome;
     private String telefone;
     private String data;
+    private String cpf;
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
     public String getData() {
         return data;

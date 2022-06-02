@@ -16,6 +16,7 @@ import br.univates.appunivates.PessoaActivity;
 import br.univates.appunivates.R;
 import br.univates.appunivates.model.Linguagem;
 import br.univates.appunivates.model.Pessoa;
+import br.univates.appunivates.tools.Globais;
 
 public class PessoaAdapter extends ArrayAdapter<Pessoa> {
 
@@ -23,7 +24,7 @@ public class PessoaAdapter extends ArrayAdapter<Pessoa> {
     private final ArrayList<Pessoa> elementos;
 
     public PessoaAdapter(Context context, ArrayList<Pessoa> elementos){
-        super(context, R.layout.item_lista_pessoa);
+        super(context, R.layout.item_lista_pessoa, elementos);
         this.context = context;
         this.elementos = elementos;
     }
@@ -40,8 +41,10 @@ public class PessoaAdapter extends ArrayAdapter<Pessoa> {
             View rowView = inflater.inflate(R.layout.item_lista_pessoa, parent, false);
 
             TextView nome = rowView.findViewById(R.id.lblNome_item_pessoa);
+            TextView telefone = rowView.findViewById(R.id.lblTelefone_item_pessoa);
 
             nome.setText(objeto.getNome());
+            telefone.setText(Globais.telefone_formatado(objeto.getTelefone()));
 
             rowView.setOnClickListener(new View.OnClickListener() {
                 @Override

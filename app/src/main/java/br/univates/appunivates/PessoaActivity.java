@@ -37,16 +37,19 @@ public class PessoaActivity extends AppCompatActivity {
     Context context;
     ArrayList<Pessoa> listagem;
     ListView ltvPessoa;
+    EditText txtNome;
     MaskEditText txttelefone;
+    MaskEditText cpf;
     EditText txtdata;
     PessoaAdapter adapter;
+    int id_Pessoa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pessoa);
         context = PessoaActivity.this;
-        ltvPessoa = findViewById(R.id.ltvPessoa);
+        txtNome = findViewById(R.id.txtnomePessoa);
         txttelefone = findViewById(R.id.txtTelefone);
         txtdata = findViewById(R.id.txtdtaNasc);
         adapter = new PessoaAdapter(context, listagem);
@@ -90,6 +93,27 @@ public class PessoaActivity extends AppCompatActivity {
             }
         });
 
+
+        Bundle extras = getIntent().getExtras();
+
+        if(extras != null){
+            id_Pessoa = extras.getInt("id", 0);
+            //buscar através desta chave
+            controller = new PessoaController(context);
+            objeto = controller.buscar(id_Pessoa);
+            if(objeto != null){
+                txtNome.setText(objeto.getNome());
+                txttelefone.setText(Globais.telefone_formatado(objeto.getTelefone()));
+
+                //cpf.setText(Globais.cpf_formatado(objeto.getCpf()));
+            }
+
+
+        }else{
+            id_Pessoa = 0;
+            if(id_Pessoa == 0){
+            }
+        }
 
     }
 
@@ -135,12 +159,12 @@ public class PessoaActivity extends AppCompatActivity {
     private void salvar(){
         EditText txtNome = findViewById(R.id.txtnomePessoa);
         txttelefone  = findViewById(R.id.txtTelefone);
+        cpf = findViewById(R.id.PessoaCPF);
         Context context = this;
         Pessoa objeto;
         String data = txtdata.getText().toString();
 
         String data_formatada = Globais.converterData(data, "dd/MM/yyyy", "yyyy-MM-dd");
-
         try{
 
 
@@ -154,11 +178,11 @@ public class PessoaActivity extends AppCompatActivity {
 
                 objeto = new Pessoa();
                 objeto.setNome(nome);
-                objeto.setTelefone(txttelefone.getMasked());
+                objeto.setTelefone(txttelefone.getUnMasked());
                 objeto.setData(data_formatada);
+                objeto.setCpf(cpf.getUnMasked());
                 PessoaController controller = new PessoaController(context);
                 controller.incluir(objeto);
-
             }
 
         }catch (Exception ex){
@@ -166,24 +190,5 @@ public class PessoaActivity extends AppCompatActivity {
             Log.e("ERRO", ex.getMessage());
         }
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        atualizarLista();
-    }
 
-    private void atualizarLista(){
-        try {
-
-            controller = new PessoaController(context);
-            listagem = controller.lista();
-
-            adapter = new PessoaAdapter(context, listagem);
-            ltvPessoa.setAdapter(adapter);
-
-        }catch (Exception ex){
-            Globais.exibirMensagem(context, ex.getMessage());
-            Log.e("ERRO", ex.getMessage());
-        }
-    }
 }

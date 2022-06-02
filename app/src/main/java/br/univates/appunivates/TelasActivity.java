@@ -32,7 +32,7 @@ public class TelasActivity extends AppCompatActivity {
         btnPessoas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, PessoaActivity.class);
+                Intent intent = new Intent(context, PessoaListaActivity.class);
                 startActivity(intent);
 
             }

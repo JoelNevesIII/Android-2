@@ -4,10 +4,24 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+
+
     <TextView
         android:id="@+id/lblNome_item_pessoa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="serif-monospace"
+        android:textSize="15dp"
+        android:paddingLeft="10dp"
         android:text="Pessoa"/>
+
+    <TextView
+        android:id="@+id/lblTelefone_item_pessoa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="serif-monospace"
+        android:textSize="15dp"
+        android:paddingLeft="10dp"
+        android:text="Telefone"/>
 
 </LinearLayout>

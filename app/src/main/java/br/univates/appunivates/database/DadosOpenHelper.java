@@ -8,7 +8,7 @@ import br.univates.appunivates.tools.Globais;
 
 public class DadosOpenHelper extends SQLiteOpenHelper {
 
-    private static final int VERSION = 6; //versão do banco de dados
+    private static final int VERSION = 8; //versão do banco de dados
     private static final String NM_BANCO = "banco";
     private Context context;
 
@@ -38,7 +38,8 @@ public class DadosOpenHelper extends SQLiteOpenHelper {
             sql.append(" id INTEGER PRIMARY KEY AUTOINCREMENT, ");
             sql.append(" nome VARCHAR(30) NOT NULL, ");
             sql.append(" telefone VARCHAR(30), ");
-            sql.append(" data DATE ");
+            sql.append(" data DATE, ");
+            sql.append(" cpf VARCHAR(11) ");
             sql.append(" ) ");
             db.execSQL(sql.toString());
 
@@ -50,34 +51,16 @@ public class DadosOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         try{
-        if(VERSION >= 2){
-            StringBuilder sql = new StringBuilder();
-            sql.append(" CREATE TABLE IF NOT EXISTS ");
-            sql.append(Tabelas.TB_PESSOAS);
-            sql.append(" ( ");
-            sql.append(" id INTEGER PRIMARY KEY AUTOINCREMENT, ");
-            sql.append(" nome VARCHAR(30) NOT NULL ");
-            sql.append(" ) ");
-            db.execSQL(sql.toString());
-        }
 
-        if (VERSION >= 6){
-            StringBuilder sql = new StringBuilder();
-            sql.append(" ALTER TABLE ");
-            sql.append(Tabelas.TB_PESSOAS);
-            sql.append(" ADD COLUMN ");
-            sql.append(" telefone VARCHAR(15) ");
-            sql.append(" ) ");
-            db.execSQL(sql.toString());
-
-            sql = new StringBuilder();
-            sql.append(" ALTER TABLE ");
-            sql.append(Tabelas.TB_PESSOAS);
-            sql.append(" ADD COLUMN  ");
-            sql.append(" data DATE ");
-            sql.append(" ) ");
-            db.execSQL(sql.toString());
-        }
+            if (VERSION >= 8){
+                StringBuilder sql = new StringBuilder();
+                sql.append(" ALTER TABLE ");
+                sql.append(Tabelas.TB_PESSOAS);
+                sql.append(" ADD COLUMN ");
+                sql.append(" cpf VARCHAR(11) ");
+                sql.append(" ) ");
+                db.execSQL(sql.toString());
+            }
 
 
         }catch (Exception ex){
